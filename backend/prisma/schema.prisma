@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name_ar   String
+  email     String   @unique
+  phone     String?
+  password  String
+  role      String   @default("user")
+  status    String   @default("active")
+  messages  Message[]
+}
+
+model Leader {
+  id             String   @id @default(uuid())
+  name_ar        String
+  job_ar   String
+  entity_ar      String
+  phone          String?
+  email          String?
+  seats          Seat[]
+}
+
+model Event {
+  id            String   @id @default(uuid())
+  title_ar      String
+  venue_ar      String
+  date          DateTime
+  time          String
+  type          String
+  backgroundImg String?
+  layouts       Layout[]
+  invitations   Invitation[]
+}
+
+model Guest {
+  id           String   @id @default(uuid())
+  name_ar      String
+  job_ar String
+  entity_ar    String
+  phone        String?
+  email        String?
+  rsvp_status  String   @default("pending")
+  seats        Seat[]
+  invitations  Invitation[]
+}
+
+model Layout {
+  id       String @id @default(uuid())
+  event_id String
+  event    Event  @relation(fields: [event_id], references: [id], onDelete: Cascade)
+  seats    Seat[]
+  shape    String
+  xPos     Float
+  yPos     Float
+  zPos     Float
+}
+
+model Seat {
+  id         String  @id @default(uuid())
+  layout_id  String
+  layout     Layout  @relation(fields: [layout_id], references: [id], onDelete: Cascade)
+  label      String?
+  guest_id   String?
+  guest      Guest?  @relation(fields: [guest_id], references: [id])
+  leader_id  String?
+  leader     Leader? @relation(fields: [leader_id], references: [id])
+  xPos       Float
+  yPos       Float
+  zPos       Float
+}
+
+model Invitation {
+  id          String   @id @default(uuid())
+  event_id    String
+  event       Event    @relation(fields: [event_id], references: [id], onDelete: Cascade)
+  guest_id    String
+  guest       Guest    @relation(fields: [guest_id], references: [id])
+  seat_id     String?  @unique
+  qr_code     String?  @unique
+  is_scanned  Boolean  @default(false)
+}
+
+model Message {
+  id          String   @id @default(uuid())
+  sender_id   String
+  sender      User     @relation(fields: [sender_id], references: [id])
+  room_id     String   @default("general")
+  text        String?
+  voice_url   String?
+}

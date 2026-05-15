@@ -15,30 +15,30 @@ export default function Team() {
   }, []);
 
   const fetchTeam = async () => {
-    const res = await axios.get('import.meta.env.VITE_API_URL/api/team');
+    const res = await axios.get('VITE_API_URL=http://localhost:5000/api/team');
     setTeam(res.data);
   };
 
   const fetchRequests = async () => {
-    const res = await axios.get('import.meta.env.VITE_API_URL/api/join-requests');
+    const res = await axios.get('VITE_API_URL=http://localhost:5000/api/join-requests');
     setRequests(res.data);
   };
 
   const handleApprove = async (id) => {
-    await axios.post(`import.meta.env.VITE_API_URL/api/team/approve/${id}`);
+    await axios.post(`VITE_API_URL=http://localhost:5000/team/approve/${id}`);
     fetchTeam();
     fetchRequests();
   };
 
   const handleReject = async (id) => {
-    await axios.delete(`import.meta.env.VITE_API_URL/api/join-requests/reject/${id}`);
+    await axios.delete(`VITE_API_URL=http://localhost:5000/api/join-requests/reject/${id}`);
     fetchRequests();
   };
 
   const handleAddMember = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('import.meta.env.VITE_API_URL/api/team', { ...newMember, status: 'active' });
+      await axios.post('VITE_API_URL=http://localhost:5000/api/team', { ...newMember, status: 'active' });
       setShowAddModal(false);
       setNewMember({ name_ar: '', email: '', phone: '', password: '', role: 'user' });
       fetchTeam();

@@ -15,17 +15,15 @@ model User {
   password  String
   role      String   @default("user")
   status    String   @default("active")
-  messages  Message[]
 }
 
 model Leader {
   id             String   @id @default(uuid())
   name_ar        String
-  job_ar   String
+  job_ar         String
   entity_ar      String
   phone          String?
   email          String?
-  seats          Seat[]
 }
 
 model Event {
@@ -36,45 +34,21 @@ model Event {
   time          String
   type          String
   backgroundImg String?
-  layouts       Layout[]
+  layoutData    String?  // هنا بنخزن شكل القاعة كامل
+   latitude      Float?  // خط العرض
+  longitude     Float?  // خط الطول
   invitations   Invitation[]
 }
 
 model Guest {
   id           String   @id @default(uuid())
   name_ar      String
-  job_ar String
+  job_ar       String
   entity_ar    String
   phone        String?
   email        String?
   rsvp_status  String   @default("pending")
-  seats        Seat[]
   invitations  Invitation[]
-}
-
-model Layout {
-  id       String @id @default(uuid())
-  event_id String
-  event    Event  @relation(fields: [event_id], references: [id], onDelete: Cascade)
-  seats    Seat[]
-  shape    String
-  xPos     Float
-  yPos     Float
-  zPos     Float
-}
-
-model Seat {
-  id         String  @id @default(uuid())
-  layout_id  String
-  layout     Layout  @relation(fields: [layout_id], references: [id], onDelete: Cascade)
-  label      String?
-  guest_id   String?
-  guest      Guest?  @relation(fields: [guest_id], references: [id])
-  leader_id  String?
-  leader     Leader? @relation(fields: [leader_id], references: [id])
-  xPos       Float
-  yPos       Float
-  zPos       Float
 }
 
 model Invitation {
@@ -83,16 +57,15 @@ model Invitation {
   event       Event    @relation(fields: [event_id], references: [id], onDelete: Cascade)
   guest_id    String
   guest       Guest    @relation(fields: [guest_id], references: [id])
-  seat_id     String?  @unique
-  qr_code     String?  @unique
+  seat_info   String?  // معلومات الكرسي
+  custom_text String?  // النص المخصص للدعوة
+  qr_code     String?  @unique // اللي هيتبعت في الـ QR
   is_scanned  Boolean  @default(false)
-}
-
-model Message {
+  createdAt   DateTime @default(now())
+}model Template {
   id          String   @id @default(uuid())
-  sender_id   String
-  sender      User     @relation(fields: [sender_id], references: [id])
-  room_id     String   @default("general")
-  text        String?
-  voice_url   String?
+  name_ar     String   // اسم القالب (مثلاً: مسرح 50 كرسي)
+  type        String   // theater, round, blank
+  layoutData  String   // هنا هنخزن شكل القاعة كاملة (JSON)
+  createdAt   DateTime @default(now())
 }

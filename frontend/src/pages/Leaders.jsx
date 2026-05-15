@@ -16,7 +16,7 @@ export default function Leaders() {
 
   const handleAddLeader = (e) => {
     e.preventDefault();
-    axios.post('http://import.meta.env.VITE_API_URL/api/leaders', newLeader)
+    axios.post('http://VITE_API_URL=http://localhost:5000L/api/leaders', newLeader)
       .then(response => {
         setLeaders([...leaders, response.data]);
         setShowModal(false);

@@ -9,14 +9,14 @@ export default function Events() {
   const [newEvent, setNewEvent] = useState({ title_ar: '', venue_ar: '', date: '', time: '', type: 'rows', backgroundImg: '' });
 
   useEffect(() => {
-    axios.get('import.meta.env.VITE_API_URL/api/events')
+    axios.get('VITE_API_URL=http://localhost:5000/api/events')
       .then(response => setEvents(response.data))
       .catch(error => console.error(error));
   }, []);
 
   const handleAddEvent = (e) => {
     e.preventDefault();
-    axios.post('import.meta.env.VITE_API_URL/api/events', newEvent)
+    axios.post('VITE_API_URL=http://localhost:5000/api/events', newEvent)
       .then(response => {
         setEvents([...events, response.data]);
         setShowModal(false);
@@ -57,7 +57,9 @@ export default function Events() {
                 <span style={{ backgroundColor: '#eff6ff', color: '#1d4ed8', padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold' }}>
                   {getEventTypeText(event.type)}
                 </span>
-                <a href="/seating" style={{ color: '#d97706', fontWeight: 'bold', textDecoration: 'none' }}>إدارة الجلوس 🪑</a>
+                <a href={`/seating/${event.id}`} style={{ color: '#d97706', fontWeight: 'bold', textDecoration: 'none' }}>
+  إدارة الجلوس 🪑
+</a>
               </div>
             </div>
           </div>

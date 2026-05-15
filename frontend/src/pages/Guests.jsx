@@ -9,14 +9,14 @@ export default function Guests() {
   const [newGuest, setNewGuest] = useState({ name_ar: '', job_ar: '', entity_ar: '', phone: '', email: '' });
 
   useEffect(() => {
-    axios.get('import.meta.env.VITE_API_URL/api/guests')
+    axios.get('VITE_API_URL=http://localhost:5000/api/guests')
       .then(response => setGuests(response.data))
       .catch(error => console.error(error));
   }, []);
 
   const handleAddGuest = (e) => {
     e.preventDefault();
-    axios.post('import.meta.env.VITE_API_URL/api/guests', newGuest)
+    axios.post('VITE_API_URL=http://localhost:5000/api/guests', newGuest)
       .then(response => {
         setGuests([...guests, response.data]);
         setShowModal(false);

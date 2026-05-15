@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import io from 'socket.io-client';
 
 // الاتصال بالسيرفر
-const socket = io('import.meta.env.VITE_API_URL');
+const socket = io('VITE_API_URL=http://localhost:5000');
 
 export default function Chat() {
   const { t } = useTranslation();

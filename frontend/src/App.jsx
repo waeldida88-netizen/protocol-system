@@ -52,7 +52,7 @@ function AppLayout() {
           <Route path="/leaders" element={<Leaders />} />
           <Route path="/guests" element={<Guests />} />
           <Route path="/events" element={<Events />} />
-          <Route path="/seating" element={<Seating />} />
+          <Route path="/seating/:eventId" element={<Seating />} />
           <Route path="/invitations" element={<Invitations />} />
           <Route path="/team" element={<Team />} />
           <Route path="/chat" element={<Chat />} />
